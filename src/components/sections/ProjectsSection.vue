@@ -1,32 +1,42 @@
 <template>
   <section id="projects" class="projects">
+    <!-- Konektor koji nastavlja gradient iz Services -->
+    <!-- <div class="section-connector"></div> -->
+    <div class="neutral-zone-top"></div>
+    <!-- Dekorativni sjaj (nastavak Services bottom-glow) -->
+    <div class="top-glow"></div>
+    
     <div class="container">
-      <div class="header-content">
+      <div class="header-content reveal">
         <h2 class="section-title">Naši Projekti</h2>
         <p class="subtitle">Pogledajte neke od naših najnovijih radova i studija slučaja</p>
       </div>
       
-      <Carousel 
-        :value="projects" 
-        :numVisible="3" 
-        :numScroll="1"
-        :responsiveOptions="responsiveOptions"
-        :circular="true"
-        :autoplayInterval="5000"
-        :showIndicators="true"
-      >
-        <template #item="slotProps">
-          <div class="carousel-item">
-            <ProjectCard :project="slotProps.data" />
-          </div>
-        </template>
-      </Carousel>
+      <div class="carousel-wrapper reveal">
+        <Carousel 
+          :value="projects" 
+          :numVisible="3" 
+          :numScroll="1"
+          :responsiveOptions="responsiveOptions"
+          :circular="true"
+          :autoplayInterval="5000"
+          :showIndicators="true"
+        >
+          <template #item="slotProps">
+            <div class="carousel-item">
+              <ProjectCard :project="slotProps.data" />
+            </div>
+          </template>
+        </Carousel>
+      </div>
     </div>
+    
+    <div class="bottom-glow"></div>
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import Carousel from 'primevue/carousel'
 import ProjectCard from '@/components/ui/ProjectCard.vue'
 import { projects } from '@/data/projects.js'
@@ -48,26 +58,90 @@ const responsiveOptions = ref([
     numScroll: 1
   }
 ])
+
+let observer
+
+onMounted(() => {
+  const elements = document.querySelectorAll('.projects .reveal')
+  
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible')
+      }
+    })
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -50px 0px'
+  })
+  
+  elements.forEach(el => observer.observe(el))
+})
+
+onBeforeUnmount(() => {
+  if (observer) observer.disconnect()
+})
 </script>
 
 <style scoped>
 .projects {
-  padding: 6rem 0;
-  background-color: #1a1c20;
-  margin-top: -2px;
+  padding: 8rem 0; /* Dovoljno paddinga da sadržaj ne beži gore */
   position: relative;
-    background: linear-gradient(to bottom, #0f1114 0%, #1a0508 100%);
+  background: linear-gradient(to bottom, #0d0e11 0%, #1a0508 100%);
+  z-index: 9;
+  /* overflow: hidden; -> Pazi sa ovim ako senke budu sečene, 
+     ali za glow efekte je obično potrebno. 
+     Ako i dalje seče, probaj 'overflow: clip' ili skloni privremeno. */
+  overflow: hidden; 
+}
+
+/* Neutralna zona na vrhu - sada je ISPOD teksta */
+.neutral-zone-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* Ista visina kao dole u Services */
+  background: #0d0e11; 
+  z-index: 2; /* Manji index! Da ne prekriva tekst */
+  pointer-events: none;
+}
+
+/* Glow efekti */
+.top-glow,
+.bottom-glow {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(237, 25, 65, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1; /* Najniži sloj */
+}
+
+.top-glow {
+  top: -300px;
+}
+
+.bottom-glow {
+  bottom: -300px;
 }
 
 .container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 1.5rem;
+  position: relative;
+  z-index: 5;
 }
 
+/* Header sada mora biti iznad svih glow/neutral layera */
 .header-content {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
+  position: relative;
+  z-index: 30; /* Visok z-index da ispliva iznad svega */
 }
 
 .section-title {
@@ -76,6 +150,8 @@ const responsiveOptions = ref([
   margin-bottom: 1rem;
   position: relative;
   display: inline-block;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .section-title::after {
@@ -83,100 +159,120 @@ const responsiveOptions = ref([
   display: block;
   width: 60px;
   height: 4px;
-  background: var(--primary-color);
+  background: var(--primary-color, #ed1941);
   margin: 15px auto 0;
   border-radius: 2px;
 }
 
 .subtitle {
-  color: #cbd5e1;
-  font-size: 1.125rem;
+  color: #94a3b8;
+  font-size: 1.1rem;
   max-width: 600px;
   margin: 1rem auto 0;
+  font-weight: 400;
+}
+
+.carousel-wrapper {
+  position: relative;
+  z-index: 10;
 }
 
 .carousel-item {
   padding: 1rem;
-  height: 100%; /* Bitno! */
-  display: flex; /* Bitno! */
+  height: 100%;
+  display: flex;
   flex-direction: column;
 }
 
-/* --- PrimeVue Carousel Custom Styling za Tamnu Temu --- */
-
-/* Strelice (Prev/Next) */
-:deep(.p-carousel-prev),
-:deep(.p-carousel-next) {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05); /* Stakleni efekat */
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-  margin: 0 1rem;
+/* SCROLL ANIMACIJE */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-:deep(.p-carousel-prev:hover),
-:deep(.p-carousel-next:hover) {
-  background: var(--primary-color); /* Crvena na hover */
-  border-color: var(--primary-color);
-  color: white;
-  transform: scale(1.1);
-  box-shadow: 0 0 15px rgba(237, 25, 65, 0.4);
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* Indikatori (Tačkice ispod) */
-:deep(.p-carousel-indicators) {
-  padding-top: 2rem;
+.reveal:nth-child(1) { transition-delay: 0ms; }
+.reveal:nth-child(2) { transition-delay: 150ms; }
+
+/* PRIME VUE CAROUSEL STYLES - Bez izmena, dobri su */
+:deep(.p-carousel-prev), :deep(.p-carousel-next) {
+  width: 3.5rem; height: 3.5rem; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  color: white; border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin: 0 1rem; position: relative; overflow: hidden;
 }
 
+:deep(.p-carousel-prev::before), :deep(.p-carousel-next::before) {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+  background: linear-gradient(135deg, rgba(237, 25, 65, 0.5), rgba(255, 255, 255, 0.08), rgba(237, 25, 65, 0.15));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0.6; pointer-events: none; transition: opacity 0.3s ease;
+}
+
+:deep(.p-carousel-prev:hover), :deep(.p-carousel-next:hover) {
+  background: rgba(237, 25, 65, 0.2); border-color: rgba(237, 25, 65, 0.3);
+  color: white; transform: scale(1.15); box-shadow: 0 12px 40px rgba(237, 25, 65, 0.3);
+}
+
+:deep(.p-carousel-prev:hover::before), :deep(.p-carousel-next:hover::before) { opacity: 1; }
+:deep(.p-carousel-prev:disabled), :deep(.p-carousel-next:disabled) { opacity: 0.3; cursor: not-allowed; }
+
+:deep(.p-carousel-indicators) { padding-top: 2.5rem; gap: 0.5rem; }
 :deep(.p-carousel-indicator button) {
-  background-color: rgba(255, 255, 255, 0.2);
-  width: 30px;
-  height: 4px;
-  border-radius: 4px;
-  transition: all 0.3s;
+  background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.05);
+  width: 32px; height: 5px; border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 }
-
 :deep(.p-carousel-indicator.p-highlight button) {
-  background-color: var(--primary-color);
-  width: 40px;
+  background: linear-gradient(90deg, rgba(237, 25, 65, 0.8), rgba(237, 25, 65, 1));
+  border-color: rgba(237, 25, 65, 0.4); width: 48px;
+  box-shadow: 0 4px 12px rgba(237, 25, 65, 0.25);
+}
+:deep(.p-carousel-indicator button:hover) { background-color: rgba(255, 255, 255, 0.15); transform: scale(1.1); }
+
+:deep(.p-carousel-content), :deep(.p-carousel-container),
+:deep(.p-carousel-items-content), :deep(.p-carousel-items-container),
+:deep(.p-carousel-item) { display: flex; align-items: stretch; }
+:deep(.p-carousel-item) { height: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, :deep(.p-carousel-prev), :deep(.p-carousel-next), :deep(.p-carousel-indicator button) { transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+  :deep(.p-carousel-prev:hover), :deep(.p-carousel-next:hover) { transform: none; }
 }
 
-
-/* Osiguraj da PrimeVue container dozvoljava visinu */
-:deep(.p-carousel-content),
-:deep(.p-carousel-container),
-:deep(.p-carousel-items-content),
-:deep(.p-carousel-items-container),
-:deep(.p-carousel-item) {
-  display: flex;
-  align-items: stretch; /* OVO JE KLJUČNO: Razvuci sve iteme na istu visinu */
+@media (max-width: 992px) {
+  .projects { padding: 6rem 0; }
+  .section-title { font-size: 2.25rem; }
+  .top-glow, .bottom-glow { width: 500px; height: 500px; }
 }
 
-:deep(.p-carousel-item) {
-  height: auto; /* Pusti flex da odradi svoje */
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  .projects {
-    padding: 4rem 0;
-  }
-  
-  .section-title {
-    font-size: 2rem;
-  }
-  
-  .carousel-item {
-    padding: 0.5rem;
-  }
-  
-  /* Sakrij strelice na mobilnom da ne smetaju, ostavi swipe */
-  :deep(.p-carousel-prev),
-  :deep(.p-carousel-next) {
-    display: none;
-  }
+  .projects { padding: 5rem 0; }
+  .section-title { font-size: 2rem; }
+  .subtitle { font-size: 1rem; }
+  .carousel-item { padding: 0.5rem; }
+  .header-content { margin-bottom: 3.5rem; }
+  :deep(.p-carousel-prev), :deep(.p-carousel-next) { width: 2.75rem; height: 2.75rem; margin: 0 0.5rem; }
+  .top-glow, .bottom-glow { width: 350px; height: 350px; }
+}
+
+@media (max-width: 480px) {
+  .projects { padding: 4rem 0; }
+  .section-title { font-size: 1.75rem; }
+  :deep(.p-carousel-prev), :deep(.p-carousel-next) { display: none; }
+  :deep(.p-carousel-indicators) { padding-top: 2rem; }
 }
 </style>
+
