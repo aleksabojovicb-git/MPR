@@ -56,6 +56,16 @@ const responsiveOptions = ref([
     breakpoint: '768px',
     numVisible: 1,
     numScroll: 1
+  },
+  {
+    breakpoint: '768px',
+    numVisible: 1, 
+    numScroll: 1
+  },
+  {
+    breakpoint: '550px', 
+    numVisible: 1, 
+    numScroll: 1
   }
 ])
 
@@ -167,9 +177,13 @@ onBeforeUnmount(() => {
 .subtitle {
   color: #94a3b8;
   font-size: 1.1rem;
-  max-width: 600px;
-  margin: 1rem auto 0;
   font-weight: 400;
+  
+  /* DODAJ OVO: */
+  max-width: 600px; /* Ograničava širinu */
+  margin: 1rem auto 0; /* Centrira tekst */
+  padding: 0 1rem; /* Dodaje malo lufta sa strane na malim ekranima */
+  line-height: 1.6; /* Malo veći prored za čitljivost */
 }
 
 .carousel-wrapper {
@@ -262,7 +276,8 @@ onBeforeUnmount(() => {
   .projects { padding: 5rem 0; }
   .section-title { font-size: 2rem; }
   .subtitle { font-size: 1rem; }
-  .carousel-item { padding: 0.5rem; }
+  .container { padding: 0 1rem; }
+  .carousel-item { padding: 0.25rem; }
   .header-content { margin-bottom: 3.5rem; }
   :deep(.p-carousel-prev), :deep(.p-carousel-next) { width: 2.75rem; height: 2.75rem; margin: 0 0.5rem; }
   .top-glow, .bottom-glow { width: 350px; height: 350px; }
@@ -270,6 +285,8 @@ onBeforeUnmount(() => {
 
 @media (max-width: 480px) {
   .projects { padding: 4rem 0; }
+  .container { padding: 0 0.5rem; }
+  .carousel-item { padding: 0.25rem 0; }
   .section-title { font-size: 1.75rem; }
   :deep(.p-carousel-prev), :deep(.p-carousel-next) { display: none; }
   :deep(.p-carousel-indicators) { padding-top: 2rem; }

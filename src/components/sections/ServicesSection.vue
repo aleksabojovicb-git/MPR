@@ -1,6 +1,7 @@
 <template>
   <section id="services" class="services">
-    <div class="section-connector"></div>
+    <!-- IZBAČEN SECTION-CONNECTOR - VIŠE NE TREBA -->
+    
     <div class="top-glow"></div>
     
     <div class="container">
@@ -14,7 +15,7 @@
           <div class="icon-box">
             <i class="pi pi-palette icon"></i>
           </div>
-          <h3>Diseign & Branding</h3>
+          <h3>Design & Branding</h3>
           <p>Kreiramo vizuelni identitet koji se pamti. Od logotipa do kompletnog brending sistema.</p>
         </div>
         
@@ -85,8 +86,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-
-
 .neutral-zone {
   position: absolute;
   bottom: 0;
@@ -101,22 +100,17 @@ onBeforeUnmount(() => {
 .services {
   padding: 8rem 0;
   position: relative;
-  /* Gradijent ZAVRŠAVA na neutralnoj (#0d0e11) umesto #0f1114 */
+  /* KLJUČNO: Počinje tačno sa #1a0508 (isto kao kraj Home sekcije) */
   background: linear-gradient(to bottom, #1a0508 0%, #0d0e11 100%);
   z-index: 10;
   overflow: hidden;
+  /* Ukloni margin-top ako postoji */
+  margin-top: -150px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 150px, black 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 150px, black 100%);
 }
 
-.section-connector {
-  position: absolute;
-  top: -150px;
-  left: 0;
-  width: 100%;
-  height: 151px;
-  background: linear-gradient(to bottom, transparent 0%, #15171a 100%);
-  z-index: 20;
-  pointer-events: none;
-}
+/* UKLONJEN .section-connector STIL */
 
 .top-glow,
 .bottom-glow {
@@ -319,75 +313,31 @@ onBeforeUnmount(() => {
   transform: translateY(0);
 }
 
-/* Svaka kartica malo kasni (stagger effect) */
 .reveal:nth-child(1) { transition-delay: 0ms; }
 .reveal:nth-child(2) { transition-delay: 100ms; }
 .reveal:nth-child(3) { transition-delay: 200ms; }
 .reveal:nth-child(4) { transition-delay: 300ms; }
 .reveal:nth-child(5) { transition-delay: 400ms; }
 
-/* ACCESSIBILITY: Poštuje korisničke preference za reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .service-card,
-  .reveal,
-  .icon-box,
-  .icon {
-    transition: none !important;
-  }
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
-  .service-card:hover {
-    transform: none;
-  }
+  .service-card, .reveal, .icon-box, .icon { transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+  .service-card:hover { transform: none; }
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
-  .services {
-    padding: 5rem 0;
-  }
-  
-  .section-title {
-    font-size: 2rem;
-  }
-  
-  .services-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .service-card {
-    padding: 2rem 1.75rem;
-  }
-  
-  .top-glow,
-  .bottom-glow {
-    width: 400px;
-    height: 400px;
-  }
+  .services { padding: 5rem 0; }
+  .section-title { font-size: 2rem; }
+  .services-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .service-card { padding: 2rem 1.75rem; }
+  .top-glow, .bottom-glow { width: 400px; height: 400px; }
 }
 
 @media (max-width: 480px) {
-  .services {
-    padding: 4rem 0;
-  }
-  
-  .section-title {
-    font-size: 1.75rem;
-  }
-  
-  .subtitle {
-    font-size: 1rem;
-  }
-  
-  .service-card {
-    padding: 1.75rem 1.5rem;
-  }
-  
-  .header-wrapper {
-    margin-bottom: 3.5rem;
-  }
+  .services { padding: 4rem 0; }
+  .section-title { font-size: 1.75rem; }
+  .subtitle { font-size: 1rem; }
+  .service-card { padding: 1.75rem 1.5rem; }
+  .header-wrapper { margin-bottom: 3.5rem; }
 }
 </style>
