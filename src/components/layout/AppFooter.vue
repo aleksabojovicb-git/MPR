@@ -1,46 +1,49 @@
 <template>
   <footer class="footer">
-    <!-- Konektor za glatki prelaz iz Contact sekcije -->
+    <!-- Konektor za glatki prelaz -->
     <div class="footer-connector"></div>
     
-    <!-- Dekorativni sjaj -->
+    <!-- Dekorativni sjaj (crveni) -->
     <div class="footer-glow"></div>
 
     <div class="container relative-z">
       <div class="footer-content">
-        <!-- Logo i Opis -->
+        
+        <!-- Lijevo: Logo i Slogan -->
         <div class="footer-brand">
-          <h2 class="footer-logo"><span class="text-primary"></span>MPR</h2>
+          <h2 class="footer-logo">MPR<span class="dot">.</span></h2>
           <p class="brand-desc">
-            Vaš partner za digitalni rast, dizajn, marketing i PR strategije koje donose rezultate.
+            Vaš partner za digitalnu transformaciju. <br>
+            Kreiramo strategije koje se pamte.
           </p>
         </div>
 
-        <!-- Brzi Linkovi -->
-        <div class="footer-links">
-          <h3>Brzi Linkovi</h3>
-          <ul>
-            <li><a href="#home">Početna</a></li>
-            <li><a href="#services">Usluge</a></li>
-            <li><a href="#projects">Projekti</a></li>
-            <li><a href="#contact">Kontakt</a></li>
-          </ul>
-        </div>
-
-        <!-- Social Media -->
+        <!-- Desno: Social Media (Glassmorphism) -->
         <div class="footer-social">
-          <h3>Pratite Nas</h3>
           <div class="social-icons">
-            <a href="#" class="social-icon"><i class="pi pi-instagram"></i></a>
-            <a href="#" class="social-icon"><i class="pi pi-facebook"></i></a>
-            <a href="#" class="social-icon"><i class="pi pi-linkedin"></i></a>
+            <a href="#" class="social-icon" aria-label="Instagram">
+              <i class="pi pi-instagram"></i>
+              <div class="tooltip">Instagram</div>
+            </a>
+            <a href="#" class="social-icon" aria-label="Facebook">
+              <i class="pi pi-facebook"></i>
+              <div class="tooltip">Facebook</div>
+            </a>
+            <a href="#" class="social-icon" aria-label="LinkedIn">
+              <i class="pi pi-linkedin"></i>
+              <div class="tooltip">LinkedIn</div>
+            </a>
           </div>
         </div>
       </div>
       
+      <!-- Footer Bottom -->
       <div class="footer-bottom">
-        <p>&copy; 2026 Powered by DGL</p>
-        <p>&copy; Duvaj ga Lako, ide i moje ime</p> <!--Ukloni ovu zajebanciju -->
+        <div class="copyright-wrapper">
+          <p>&copy; 2026 MPR Digital. Sva prava zadržana.</p>
+          <span class="separator">|</span>
+          <p class="dev-credit">Powered by <span class="highlight">DGL</span></p>
+        </div>
       </div>
     </div>
   </footer>
@@ -48,13 +51,13 @@
 
 <style scoped>
 .footer {
-  /* Gradijent: Crna (Contact) -> Tamno Crvena (Footer) */
-  background: linear-gradient(to bottom, #0f1114 0%, #1a0508 100%);
+  /* Gradijent iz crne (Contact dno) u tamno crvenu/crnu */
+  background: linear-gradient(to bottom, #0f1114 0%, #120405 100%);
   color: #cbd5e1;
-  padding: 6rem 0 2rem;
+  padding: 5rem 0 2rem;
   position: relative;
   overflow: hidden;
-  margin-top: -2px; /* Spajanje */
+  margin-top: -2px;
 }
 
 /* Konektor za prelaz */
@@ -63,7 +66,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100px;
+  height: 80px;
   background: linear-gradient(to bottom, #0f1114 0%, transparent 100%);
   pointer-events: none;
   z-index: 1;
@@ -72,11 +75,11 @@
 /* Crveni sjaj u pozadini */
 .footer-glow {
   position: absolute;
-  bottom: -50px;
-  right: -50px;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(237, 25, 65, 0.15) 0%, transparent 70%);
+  bottom: -100px;
+  right: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(237, 25, 65, 0.12) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
@@ -85,114 +88,122 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
-  position: relative; /* Iznad sjaja */
-}
-
-.relative-z {
   position: relative;
   z-index: 2;
 }
 
 .footer-content {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
-  gap: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 4rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.footer-brand h2 {
-  font-size: 2.5rem;
+/* --- LEVA STRANA: LOGO --- */
+.footer-logo {
+  font-size: 3rem;
   color: white;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   font-weight: 800;
   letter-spacing: -1px;
+  line-height: 1;
 }
 
-.text-primary {
-  color: var(--primary-color);
-  text-shadow: 0 0 20px rgba(237, 25, 65, 0.5); /* Sjaj slova */
+.footer-logo .dot {
+  color: var(--primary-color, #ed1941);
 }
 
 .brand-desc {
-  font-size: 1rem;
-  line-height: 1.7;
-  max-width: 350px;
-  color: #a0aec0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #94a3b8;
+  max-width: 400px;
 }
 
-.footer-links h3,
-.footer-social h3 {
-  color: white;
-  font-size: 1.3rem;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-  /* Crvena linija ispod naslova */
-  display: inline-block;
-  border-bottom: 2px solid var(--primary-color);
-  padding-bottom: 5px;
-}
-
-.footer-links ul {
-  list-style: none;
-  padding: 0;
-}
-
-.footer-links li {
-  margin-bottom: 1rem;
-}
-
-.footer-links a {
-  text-decoration: none;
-  color: #cbd5e1;
-  transition: all 0.3s;
-  font-size: 1.05rem;
-}
-
-.footer-links a:hover {
-  color: var(--primary-color);
-  padding-left: 8px; /* Veći pomak */
-  text-shadow: 0 0 10px rgba(237, 25, 65, 0.3);
-}
-
+/* --- DESNA STRANA: SOCIAL ICONS --- */
 .social-icons {
   display: flex;
-  gap: 1.2rem;
+  gap: 1.5rem;
 }
 
 .social-icon {
-  width: 3rem;
-  height: 3rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   text-decoration: none;
-  transition: all 0.3s;
-  font-size: 1.2rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-size: 1.25rem;
 }
 
 .social-icon:hover {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  transform: translateY(-5px) rotate(360deg); /* Zabavna rotacija */
-  box-shadow: 0 5px 15px rgba(237, 25, 65, 0.4);
+  background: var(--primary-color, #ed1941);
+  border-color: var(--primary-color, #ed1941);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(237, 25, 65, 0.3);
+  color: white;
 }
 
+/* Tooltip za ikone */
+.tooltip {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.social-icon:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* --- FOOTER BOTTOM --- */
 .footer-bottom {
-  text-align: center;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 0.95rem;
-  color: #718096;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Mobile Responsive */
+.copyright-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.separator {
+  color: #334155;
+}
+
+.highlight {
+  color: var(--primary-color, #ed1941);
+  font-weight: 600;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .footer-content {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     text-align: center;
     gap: 3rem;
   }
@@ -201,16 +212,13 @@
     margin: 0 auto;
   }
   
-  .social-icons {
-    justify-content: center;
+  .copyright-wrapper {
+    flex-direction: column;
+    gap: 0.5rem;
   }
   
-  .footer-links h3,
-  .footer-social h3 {
-    border-bottom: none; /* Bez linije na centru mobilnog */
-    text-decoration: underline;
-    text-decoration-color: var(--primary-color);
-    text-underline-offset: 5px;
+  .separator {
+    display: none;
   }
 }
 </style>
