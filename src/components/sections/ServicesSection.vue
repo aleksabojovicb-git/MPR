@@ -14,7 +14,7 @@
           <div class="icon-box">
             <i class="pi pi-palette icon"></i>
           </div>
-          <h3>Disaign & Branding</h3>
+          <h3>Diseign & Branding</h3>
           <p>Kreiramo vizuelni identitet koji se pamti. Od logotipa do kompletnog brending sistema.</p>
         </div>
         
