@@ -140,7 +140,7 @@ onBeforeUnmount(() => {
 .bottom-glow { bottom: -200px; }
 
 /* Neutral zona na dnu kao kod Services */
-.neutral-zone {
+/* .neutral-zone {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -149,7 +149,7 @@ onBeforeUnmount(() => {
   background: #0d0e11;
   z-index: 2;
   pointer-events: none;
-}
+} */
 
 .container {
   max-width: 1000px;

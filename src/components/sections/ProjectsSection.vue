@@ -2,7 +2,7 @@
   <section id="projects" class="projects">
     <!-- Konektor koji nastavlja gradient iz Services -->
     <!-- <div class="section-connector"></div> -->
-    <div class="neutral-zone-top"></div>
+    <!-- <div class="neutral-zone-top"></div> -->
     <!-- Dekorativni sjaj (nastavak Services bottom-glow) -->
     <div class="top-glow"></div>
     
@@ -93,41 +93,42 @@ onBeforeUnmount(() => {
 })
 </script>
 
+
 <style scoped>
 .projects {
-  padding: 8rem 0; /* Dovoljno paddinga da sadržaj ne beži gore */
+  padding: 8rem 0;
   position: relative;
-  background: linear-gradient(to bottom, #0d0e11 0%, #1a0508 100%);
-  z-index: 9;
-  /* overflow: hidden; -> Pazi sa ovim ako senke budu sečene, 
-     ali za glow efekte je obično potrebno. 
-     Ako i dalje seče, probaj 'overflow: clip' ili skloni privremeno. */
-  overflow: hidden; 
-}
+  z-index: 7; /* Ispod Services (8), iznad Contact (6) */
+  overflow: hidden; /* Obavezno zbog glow efekata koji vire */
+    background: linear-gradient(to bottom, #0d0e11 0%, #0d0e11 60%, #1a0508 100%);
 
-/* Neutralna zona na vrhu - sada je ISPOD teksta */
-.neutral-zone-top {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 80px; /* Ista visina kao dole u Services */
-  background: #0d0e11; 
-  z-index: 2; /* Manji index! Da ne prekriva tekst */
-  pointer-events: none;
 }
 
 /* Glow efekti */
-.top-glow,
+
+.top-glow {
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  
+  background: radial-gradient(circle, rgba(237, 25, 65, 0.02) 0%, transparent 70%);
+  
+  pointer-events: none;
+  z-index: 1;
+}
 .bottom-glow {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   width: 700px;
   height: 700px;
-  background: radial-gradient(circle, rgba(237, 25, 65, 0.08) 0%, transparent 70%);
+  bottom: -300px;
+  background: radial-gradient(circle, rgba(235, 1, 44, 0.1) 0%, transparent 70%);
   pointer-events: none;
-  z-index: 1; /* Najniži sloj */
+  z-index: 1;
 }
 
 .top-glow {
@@ -146,12 +147,12 @@ onBeforeUnmount(() => {
   z-index: 5;
 }
 
-/* Header sada mora biti iznad svih glow/neutral layera */
+/* Header content */
 .header-content {
   text-align: center;
   margin-bottom: 5rem;
   position: relative;
-  z-index: 30; /* Visok z-index da ispliva iznad svega */
+  z-index: 30; 
 }
 
 .section-title {
@@ -178,12 +179,10 @@ onBeforeUnmount(() => {
   color: #94a3b8;
   font-size: 1.1rem;
   font-weight: 400;
-  
-  /* DODAJ OVO: */
-  max-width: 600px; /* Ograničava širinu */
-  margin: 1rem auto 0; /* Centrira tekst */
-  padding: 0 1rem; /* Dodaje malo lufta sa strane na malim ekranima */
-  line-height: 1.6; /* Malo veći prored za čitljivost */
+  max-width: 600px;
+  margin: 1rem auto 0;
+  padding: 0 1rem;
+  line-height: 1.6;
 }
 
 .carousel-wrapper {
@@ -214,7 +213,7 @@ onBeforeUnmount(() => {
 .reveal:nth-child(1) { transition-delay: 0ms; }
 .reveal:nth-child(2) { transition-delay: 150ms; }
 
-/* PRIME VUE CAROUSEL STYLES - Bez izmena, dobri su */
+/* PRIME VUE CAROUSEL STYLES - Bez izmena */
 :deep(.p-carousel-prev), :deep(.p-carousel-next) {
   width: 3.5rem; height: 3.5rem; border-radius: 50%;
   background: rgba(255, 255, 255, 0.035);
@@ -292,4 +291,5 @@ onBeforeUnmount(() => {
   :deep(.p-carousel-indicators) { padding-top: 2rem; }
 }
 </style>
+
 
