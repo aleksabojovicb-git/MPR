@@ -1,6 +1,7 @@
 <template>
   <section id="services" class="services">
-    <!-- IZBAČEN SECTION-CONNECTOR - VIŠE NE TREBA -->
+    <!-- Neutral zona na vrhu - prima završnu boju AboutUs -->
+    <div class="neutral-zone-top"></div>
     
     <div class="top-glow"></div>
     
@@ -27,13 +28,13 @@
           <p>Strategije koje donose rezultate. Google Ads, Facebook kampanje i SEO optimizacija.</p>
         </div>
         
-        <div class="service-card reveal">
+        <!-- <div class="service-card reveal">
           <div class="icon-box">
             <i class="pi pi-share-alt icon"></i>
           </div>
           <h3>Social Media</h3>
           <p>Upravljanje profilima, kreiranje sadržaja i rast zajednice na Instagramu i LinkedInu.</p>
-        </div>
+        </div> -->
         
         <div class="service-card reveal">
           <div class="icon-box">
@@ -54,7 +55,9 @@
     </div>
     
     <div class="bottom-glow"></div>
-    <div class="neutral-zone"></div>
+    
+    <!-- Neutral zona na dnu - priprema za Projects -->
+    <div class="neutral-zone-bottom"></div>
   </section>
 </template>
 
@@ -64,13 +67,13 @@ import { onMounted, onBeforeUnmount } from 'vue'
 let observer
 
 onMounted(() => {
-  const cards = document.querySelectorAll('.service-card.reveal')
+  const cards = document.querySelectorAll('#services .reveal')
   
   observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible')
-      }
+      if (!entry.isIntersecting) return
+      entry.target.classList.add('is-visible')
+      observer.unobserve(entry.target)
     })
   }, {
     threshold: 0.15,
@@ -86,31 +89,38 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.neutral-zone {
+.services {
+  padding: 8rem 0;
+  position: relative;
+  /* Gradient: počinje odmah ispod neutralne zone, završava iznad donje neutral zone */
+  background: linear-gradient(to bottom, #0d0e11 0%, #1a0508 50%, #0d0e11 100%);
+  z-index: 8; /* Manji od AboutUs (10), veći od Projects (9) nije bitno, ali drži red */
+  overflow: hidden;
+}
+
+/* Neutralna zona NA VRHU - prima boju iz AboutUs (#0d0e11) */
+.neutral-zone-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: #0d0e11; /* Ista kao kraj AboutUs */
+  z-index: 2; /* Ispod sadržaja (container je z-index: 5) */
+  pointer-events: none;
+}
+
+/* Neutralna zona NA DNU - daje boju Projects sekciji (#0d0e11) */
+.neutral-zone-bottom {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 80px;
-  background: #0d0e11; 
+  background: #0d0e11; /* Ista kao početak Projects */
   z-index: 2;
   pointer-events: none;
 }
-
-.services {
-  padding: 8rem 0;
-  position: relative;
-  /* KLJUČNO: Počinje tačno sa #1a0508 (isto kao kraj Home sekcije) */
-  background: linear-gradient(to bottom, #1a0508 0%, #0d0e11 100%);
-  z-index: 10;
-  overflow: hidden;
-  /* Ukloni margin-top ako postoji */
-  margin-top: -150px;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 150px, black 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, black 150px, black 100%);
-}
-
-/* UKLONJEN .section-connector STIL */
 
 .top-glow,
 .bottom-glow {
@@ -124,13 +134,8 @@ onBeforeUnmount(() => {
   z-index: 1;
 }
 
-.top-glow {
-  top: -200px;
-}
-
-.bottom-glow {
-  bottom: -200px;
-}
+.top-glow { top: -200px; }
+.bottom-glow { bottom: -200px; }
 
 .container {
   max-width: 1200px;
@@ -144,7 +149,7 @@ onBeforeUnmount(() => {
   text-align: center;
   margin-bottom: 5rem;
   position: relative;
-  z-index: 30;
+  z-index: 5;
 }
 
 .section-title {
